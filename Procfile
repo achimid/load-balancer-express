@@ -1,1 +1,1 @@
-web: node index-cluster.js
+web: node index.js
