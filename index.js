@@ -1,7 +1,7 @@
 const express = require('express')
 const request = require('request')
 
-let servers = [{url: 'http://localhost:3000'}, {url: 'http://localhost:3001'}]
+let servers = [{url: 'https://app-api-test-01.herokuapp.com/hello'}, {url: 'https://app-api-test-02.herokuapp.com/hello'}]
 let cur = 0
 
 const handlerError = res => error => res.status(500).send(error.message)
