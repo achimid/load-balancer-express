@@ -4,7 +4,11 @@ const express = require('express')
 const cors = require('cors')
 const request = require('request')
 
-let servers = [{url: 'https://app-api-test-01.herokuapp.com', status: true}, {url: 'https://app-api-test-02.herokuapp.com', status: true}]
+let servers = [
+    {url: 'https://app-api-test-01.herokuapp.com', status: true}, 
+    {url: 'https://app-api-test-02.herokuapp.com', status: true},
+    {url: 'https://app-api-test-03.herokuapp.com', status: true}
+]
 let cur = 0
 
 const handlerError = res => error => res.status(500).send(error.message)
