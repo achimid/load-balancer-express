@@ -11,7 +11,6 @@ const handlerError = res => error => res.status(500).send(error.message)
 
 const handler = (req, res) => {
     const sList = servers.filter(s => s.status)
-    console.log(sList)
     const _req = request({ url: sList[cur].url + req.url }).on('error', handlerError(res))
     req.pipe(_req).pipe(res)
     cur = (cur + 1) % sList.length
