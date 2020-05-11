@@ -1,13 +1,17 @@
+require('dotenv').config()
+
 const express = require('express')
+const cors = require('cors')
 const request = require('request')
 
-let servers = [{url: 'https://app-api-test-01.herokuapp.com/hello'}, {url: 'https://app-api-test-02.herokuapp.com/hello'}]
+let servers = [{url: 'https://app-api-test-01.herokuapp.com', status: true}, {url: 'https://app-api-test-02.herokuapp.com', status: true}]
 let cur = 0
 
 const handlerError = res => error => res.status(500).send(error.message)
 
 const handler = (req, res) => {
     const sList = servers.filter(s => s.status)
+    console.log(sList)
     const _req = request({ url: sList[cur].url + req.url }).on('error', handlerError(res))
     req.pipe(_req).pipe(res)
     cur = (cur + 1) % sList.length
@@ -20,7 +24,7 @@ const profilerMiddleware = (req, res, next) => {
 }
 
 const pingServer = (url) => new Promise((resolve) => {
-    request(url + '/hello2', (error, response) => {
+    request(url + '/hello', (error, response) => {
         const ret = { up: false, url }
 
         if(error) {
@@ -49,7 +53,11 @@ const checkServers = () => {
 }
 
 const app = express()
-    .use(profilerMiddleware)
+
+app.use(cors())
+app.disable('x-powered-by')
+
+app.use(profilerMiddleware)
     .get('*', handler)
     .post('*', handler)
     .put('*', handler)
@@ -59,6 +67,7 @@ const app = express()
     .connect('*', handler)
     .options('*', handler)
     .trace('*', handler)
+
 
 setInterval(checkServers, process.env.HEALTH_CHECK_SERVER_TIME || 10000)
 
