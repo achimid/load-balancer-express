@@ -13,7 +13,7 @@ app.get('/hello', (req, res) => {
 })
 
 app.get('/hellof', (req, res) => {
-    res.send(`hello - ` + fibonacci(40))
+    res.send(`hello - ` + fibonacci(20))
 })
 
 function fibonacci(num) {
