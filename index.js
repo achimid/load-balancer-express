@@ -5,9 +5,9 @@ const cors = require('cors')
 const request = require('request')
 
 let servers = [
-    {url: 'https://app-api-test-01.herokuapp.com', status: true}, 
-    {url: 'https://app-api-test-02.herokuapp.com', status: true},
-    {url: 'https://app-api-test-03.herokuapp.com', status: true}
+    {url: 'https://extract-mkv-subtitle-prd-01.herokuapp.com/', status: true}, 
+    {url: 'https://extract-mkv-subtitle-prd-02.herokuapp.com/', status: true},
+    {url: 'https://extract-mkv-subtitle-prd-03.herokuapp.com/', status: true}
 ]
 let cur = 0
 
@@ -27,7 +27,7 @@ const profilerMiddleware = (req, res, next) => {
 }
 
 const pingServer = (url) => new Promise((resolve) => {
-    request(url + '/hello', (error, response) => {
+    request(url + '/api/v1/healthcheck', (error, response) => {
         const ret = { up: false, url }
 
         if(error) {
