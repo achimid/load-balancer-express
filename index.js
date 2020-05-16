@@ -4,6 +4,9 @@ const express = require('express')
 const cors = require('cors')
 const request = require('request')
 
+const httpProxy = require('http-proxy')
+const proxy = httpProxy.createProxyServer({ ws: true });
+
 let servers = [
     {url: 'https://extract-mkv-subtitle-prd-01.herokuapp.com', status: true}, 
     {url: 'https://extract-mkv-subtitle-prd-02.herokuapp.com', status: true},
@@ -62,7 +65,7 @@ const app = express()
 app.use(cors())
 app.disable('x-powered-by')
 
-// app.use(profilerMiddleware)
+app.use(profilerMiddleware)
 app.get('*', handler)
     .post('*', handler)
     .put('*', handler)
@@ -73,6 +76,9 @@ app.get('*', handler)
     .options('*', handler)
     .trace('*', handler)
 
+    app.on('upgrade', function (req, socket, head) {
+    proxy.ws(req, socket, head);
+})
 
 setInterval(checkServers, process.env.HEALTH_CHECK_SERVER_TIME || 10000)
 
